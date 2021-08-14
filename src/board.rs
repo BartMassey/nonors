@@ -64,18 +64,20 @@ impl Board {
         }
     }
 
-    pub fn gen_clues(&self) -> Clues {
+    pub fn solved(&self, clues: &Clues) -> bool {
         let nrows = self.rows.len();
         let ncols = self.cols.len();
-        let rows = self.rows
-            .iter()
-            .map(|&r| gen_clue(ncols, r))
-            .collect();
-        let cols = self.cols
-            .iter()
-            .map(|&c| gen_clue(nrows, c))
-            .collect();
-        Clues { rows, cols }
+        for (i, &r) in self.rows.iter().enumerate()  {
+            if gen_clue(ncols, r) != clues.rows[i] {
+                return false;
+            }
+        }
+        for (i, &c) in self.cols.iter().enumerate()  {
+            if gen_clue(nrows, c) != clues.cols[i] {
+                return false;
+            }
+        }
+        true
     }
 }
 

@@ -7,8 +7,7 @@ use clues::*;
 fn solve(clues: &Clues, board: &mut Board, r: usize, c: usize) {
     let (nr, nc) = clues.dims();
     if r >= nr {
-        let board_clues = board.gen_clues();
-        if &board_clues == clues {
+        if board.solved(clues) {
             println!("{}", board);
         }
         return;
