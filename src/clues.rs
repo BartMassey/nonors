@@ -1,14 +1,14 @@
-#![allow(unused)]
-
 use std::str::FromStr;
+
+pub type Clue = Vec<usize>;
 
 #[derive(Debug)]
 pub struct ParseError;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct Clues {
-    rows: Vec<Vec<usize>>,
-    cols: Vec<Vec<usize>>,
+    pub rows: Vec<Clue>,
+    pub cols: Vec<Clue>,
 }
 
 impl Clues {
@@ -16,8 +16,8 @@ impl Clues {
     pub fn parse(desc: &str) -> Result<Self, ParseError> {
         let mut width: Option<usize> = None;
         let mut height: Option<usize> = None;
-        let mut rows: Option<Vec<Vec<usize>>> = None;
-        let mut cols: Option<Vec<Vec<usize>>> = None;
+        let mut rows: Option<Vec<Clue>> = None;
+        let mut cols: Option<Vec<Clue>> = None;
 
         let lines: Vec<_> = desc
             .split('\n')
@@ -27,7 +27,6 @@ impl Clues {
                     .split_whitespace()
                     .collect::<Vec<&str>>()
             })
-            .filter(|words| words.len() > 0)
             .collect();
         let nlines = lines.len();
 
@@ -42,7 +41,7 @@ impl Clues {
             Ok(())
         }
 
-        fn parse_clues(nclues: Option<usize>, lines: &[Vec<&str>]) -> Result<(usize, Vec<Vec<usize>>), ParseError>
+        fn parse_clue(nclues: Option<usize>, lines: &[Vec<&str>]) -> Result<(usize, Vec<Clue>), ParseError>
         {
             let ncs = if let Some(nclues) = nclues {
                 nclues
@@ -51,11 +50,11 @@ impl Clues {
             };
 
             let mut cs = vec![];
-            for c in 0..ncs {
-                match lines[c].len() {
+            for line in &lines[..ncs] {
+                match line.len() {
                     0 => cs.push(vec![]),
                     1 => {
-                        let clues = lines[c][0]
+                        let clues = line[0]
                             .split(',')
                             .map(|clue| {
                                 clue.parse().map_err(|_| ParseError)
@@ -73,6 +72,10 @@ impl Clues {
         while pos < nlines {
             
             let words = &lines[pos];
+            if words.is_empty() {
+                pos += 1;
+                continue;
+            }
 
             match words[0] {
                 "width" => {
@@ -83,14 +86,14 @@ impl Clues {
                 }
                 "rows" => {
                     pos += 1;
-                    let (nrs, rs) = parse_clues(height, &lines[pos..])?;
+                    let (nrs, rs) = parse_clue(height, &lines[pos..])?;
                     pos += nrs;
                     rows = Some(rs);
                     continue;
                 }
                 "columns" => {
                     pos += 1;
-                    let (ncs, cs) = parse_clues(width, &lines[pos..])?;
+                    let (ncs, cs) = parse_clue(width, &lines[pos..])?;
                     pos += ncs;
                     cols = Some(cs);
                     continue;
@@ -105,5 +108,9 @@ impl Clues {
             (Some(rows), Some(cols)) => Ok(Self { rows, cols }),
             _ => Err(ParseError),
         }
+    }
+
+    pub fn dims(&self) -> (usize, usize) {
+        (self.rows.len(), self.cols.len())
     }
 }
