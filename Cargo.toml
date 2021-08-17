@@ -7,3 +7,6 @@ edition = "2018"
 debug = true
 lto = true
 codegen-units = 1
+
+[dependencies]
+structopt = "0.3.22"
