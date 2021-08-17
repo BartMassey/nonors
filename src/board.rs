@@ -64,16 +64,24 @@ impl Board {
         }
     }
 
+    pub fn gen_row_clue(&self, r: usize) -> Clue {
+        gen_clue(self.cols.len(), self.rows[r])
+    }
+
+    pub fn gen_col_clue(&self, c: usize) -> Clue {
+        gen_clue(self.rows.len(), self.cols[c])
+    }
+
     pub fn solved(&self, clues: &Clues) -> bool {
         let nrows = self.rows.len();
         let ncols = self.cols.len();
-        for (i, &r) in self.rows.iter().enumerate()  {
-            if gen_clue(ncols, r) != clues.rows[i] {
+        for (i, &c) in self.cols.iter().enumerate()  {
+            if gen_clue(nrows, c) != clues.cols[i] {
                 return false;
             }
         }
-        for (i, &c) in self.cols.iter().enumerate()  {
-            if gen_clue(nrows, c) != clues.cols[i] {
+        for (i, &r) in self.rows.iter().enumerate()  {
+            if gen_clue(ncols, r) != clues.rows[i] {
                 return false;
             }
         }

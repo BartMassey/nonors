@@ -19,6 +19,9 @@ pub fn solve(
     let (mut next_r, mut next_c) = (r, c);
     next_c += 1;
     if next_c >= nc {
+        if clues.rows[r] != board.gen_row_clue(r) {
+            return false;
+        }
         next_r += 1;
         next_c = 0;
     }
