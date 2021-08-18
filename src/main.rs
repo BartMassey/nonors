@@ -1,7 +1,6 @@
 mod board;
 mod clues;
-mod brute;
-mod rows;
+mod solvers;
 
 use std::path::PathBuf;
 use std::process::exit;
@@ -10,6 +9,7 @@ use structopt::StructOpt;
 
 pub use board::*;
 pub use clues::*;
+pub use solvers::*;
 
 #[derive(Debug, StructOpt)]
 #[structopt(name = "nonors", about = "Nonogram solver.")]
