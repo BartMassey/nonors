@@ -60,7 +60,11 @@ impl Clues {
                                 clue.parse().map_err(|_| ParseError)
                             })
                             .collect::<Result<_, _>>()?;
-                        cs.push(clues);
+                        if clues == vec![0] {
+                            cs.push(vec![])
+                        } else {
+                            cs.push(clues);
+                        }
                     }
                     _ => return Err(ParseError),
                 }
