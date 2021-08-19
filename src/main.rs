@@ -32,6 +32,7 @@ fn main() {
     let solved = match opt.solver.as_str() {
         "brute" => brute::solve(&clues, &mut board, 0, 0, opt.find_all),
         "rows" => rows::solve(&clues, &mut board, 0, 0, opt.find_all),
+        "rc" => rc::solve(&clues, &mut board, 0, 0, opt.find_all),
         _ => {
             eprintln!("unknown strategy {}", opt.solver);
             exit(-1);

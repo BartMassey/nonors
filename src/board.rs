@@ -72,6 +72,36 @@ impl Board {
         gen_clue(self.rows.len(), self.cols[c])
     }
 
+    // XXX Need to count better for better pruning.
+    fn col_inconsistent(&self, col_clue: &[usize], c: usize) -> bool {
+        let c_clue = self.gen_col_clue(c);
+        let nc_clue = c_clue.len();
+        if nc_clue == 0 {
+            return false;
+        }
+        if nc_clue > col_clue.len() {
+            return true;
+        }
+        for i in 0..nc_clue-1 {
+            if c_clue[i] != col_clue[i] {
+                return true;
+            }
+        }
+        if c_clue[nc_clue-1] > col_clue[nc_clue-1] {
+            return true;
+        }
+        false
+    }
+
+    pub fn cols_inconsistent(&self, clues: &Clues) -> bool {
+        for (c, col) in clues.cols.iter().enumerate() {
+            if self.col_inconsistent(col, c) {
+                return true;
+            }
+        }
+        false
+    }
+
     pub fn solved(&self, clues: &Clues) -> bool {
         let nrows = self.rows.len();
         let ncols = self.cols.len();
