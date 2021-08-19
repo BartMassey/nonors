@@ -8,6 +8,11 @@ pub fn solve(
     find_all: bool,
 ) -> bool {
     let (nr, nc) = clues.dims();
+
+    if r > 0 && c == 0 && clues.rows[r - 1] != board.gen_row_clue(r - 1) {
+        return false;
+    }
+
     if r >= nr {
         if board.solved(clues) {
             println!("{}", board);
@@ -19,9 +24,6 @@ pub fn solve(
     let (mut next_r, mut next_c) = (r, c);
     next_c += 1;
     if next_c >= nc {
-        if clues.rows[r] != board.gen_row_clue(r) {
-            return false;
-        }
         next_r += 1;
         next_c = 0;
     }
