@@ -3,19 +3,19 @@ use std::fmt;
 
 use crate::*;
 
-type Line = u64;
+pub type Line = u64;
 
 #[derive(Debug, Clone)]
 pub struct Board {
-    rows: Vec<Line>,
-    cols: Vec<Line>,
+    pub rows: Vec<Line>,
+    pub cols: Vec<Line>,
 }
 
 fn gen_clue(nline: usize, line: Line) -> Clue {
     let mut clue = Clue::new();
     let mut count = 0;
     for i in 0..nline {
-        let mark = line & (1 << i) != 0;
+        let mark = (line & (1 << i)) != 0;
         if mark {
             count += 1;
         } else if count > 0 {
