@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2018"
 
 [profile.release]
-debug = true
-lto = true
+# debug = true
+# lto = true
 codegen-units = 1
 
 [dependencies]
