@@ -18,6 +18,28 @@ fn gen_rows(r: Line, ir: usize, nr: usize, clue: &[usize]) -> Box<dyn Iterator<I
     result
 }
 
+#[test]
+fn test_gen_rows() {
+    let clue = [1, 1, 1];
+    let mut rows = [
+        0b010101,
+        0b100101,
+        0b101001,
+        0b101010,
+    ];
+    rows.sort();
+    let mut gens: Vec<Line> = gen_rows(0, 0, 6, &clue).collect();
+    gens.sort();
+    assert_eq!(rows.to_vec(), gens);
+
+    let clue = [4, 2];
+    let rows = [
+        0b1101111,
+    ];
+    let gens: Vec<Line> = gen_rows(0, 0, 7, &clue).collect();
+    assert_eq!(rows.to_vec(), gens);
+}
+
 pub fn solve(
     clues: &Clues,
     board: &mut Board,
