@@ -34,5 +34,10 @@ pub fn solve(
         return true;
     }
     board.set(r, c, true);
-    solve(clues, board, next_r, next_c, find_all) || solved
+    let solved = solve(clues, board, next_r, next_c, find_all);
+    if !find_all && solved {
+        return true;
+    }
+    board.set(r, c, false);
+    solved
 }
